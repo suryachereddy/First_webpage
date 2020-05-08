@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form action="{{ url_for('index') }}" method="post">
+    <h1>Success!</h1>
+    <h1>Login with your new account</h1>
+    <div>
+        <input type="submit" value="Login"/>
+    </div>
+</form>
+{% endblock %}
