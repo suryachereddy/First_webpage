@@ -1,0 +1,6 @@
+URL: postgres://rljdkhwyibrclr:83b8058cc1429ab991e99a6bdf0f137575a6a87654989daa21d4cce4891134fc@ec2-50-17-90-177.compute-1.amazonaws.com:5432/d2adq2pnnb6dg2
+HOST: ec2-50-17-90-177.compute-1.amazonaws.com
+Database: d2adq2pnnb6dg2
+User: rljdkhwyibrclr
+Port: 5432
+Password: 83b8058cc1429ab991e99a6bdf0f137575a6a87654989daa21d4cce4891134fc
