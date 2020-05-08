@@ -1,0 +1,26 @@
+{% extends "layout2.html" %}
+
+{% block title %}
+   Readers Hub
+{% endblock %}
+
+{% block body %}
+<div id="title">Readers Hub</div>
+<div id="linkGroup">
+    <div class="link"><a href="{{ url_for('main') }}">Home</a></div>
+    <div class="link"><a href="{{ url_for('user') }}">User Info</a></div>
+    <div class="link"><a href="{{ url_for('search') }}">Search</a></div>
+    <div class="link"><a href="{{ url_for('api') }}">API</a></div>
+</div>
+        
+<div id="blueBox"> 
+    <div id="header"></div>
+    <div class="contentTitle">Welcome to Readers Hub!</div>
+    <div class="pageContent">
+        <p>In Readers Hub, users will be able to access and view Reviews and Ratings for over 5000 books.</p>
+        <p>Feel free to search for books, leave reviews for individual books, and see the reviews made by other users!</p>
+        <p>Since we are relatively new, we have pulled in ratings from Goodreads, another book review website, so ratings are from a broader audience.</p>
+        <p>Finally, users will be able to query for book details and book reviews programmatically via the API. Details and documentation in the API tab.</p>
+    </div>
+</div>
+{% endblock %}
