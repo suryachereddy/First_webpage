@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -19,12 +19,12 @@ Session(app)
 
 # Set up database
 #For Deployment
-engine = create_engine(os.getenv("DATABASE_URL"))
+#engine = create_engine(os.getenv("DATABASE_URL"))
 #For Local
-#engine = create_engine("postgres://rljdkhwyibrclr:83b8058cc1429ab991e99a6bdf0f137575a6a87654989daa21d4cce4891134fc@ec2-50-17-90-177.compute-1.amazonaws.com:5432/d2adq2pnnb6dg2")
+engine = create_engine("postgres://rljdkhwyibrclr:83b8058cc1429ab991e99a6bdf0f137575a6a87654989daa21d4cce4891134fc@ec2-50-17-90-177.compute-1.amazonaws.com:5432/d2adq2pnnb6dg2")
 db = scoped_session(sessionmaker(bind=engine))
 
-
+KEY="6iGmZfPMsrgbm0i8iqfcw" #suryachereddy added this KEY variable.
 
 @app.route("/",methods =["POST","GET"])
 def index():
@@ -108,7 +108,14 @@ def book(book_id):
     row = db.execute("SELECT * FROM books WHERE id = :id",{"id":bid}).fetchone()
     db.commit()
     data = {'bid':bid}
-    return render_template('book_id.html',title = row[2],author = row[3],data = data)
+    #suryachereddy
+    isbn=row[1]
+    print(isbn)
+    res=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": KEY, "isbns": isbn})
+    res=res.json()
+    rating=res['books'][0]['average_rating']
+    #suryachereddy end
+    return render_template('book_id.html',title = row[2],author = row[3],data = data,rating=rating,isbn=row[1]) #suryachereddy added arguments rating and isbn 
 
 @app.route("/API",methods = ["POST","GET"])
 def api():
@@ -134,3 +141,26 @@ def success():
     book_id = request.form.get("book_id")
     data = {'bid':book_id}
     return render_template('review_success.html',data = data)
+
+#suryachereddy
+@app.route("/API/<string:isbn>")
+def api_out(isbn):
+    isbn=str(isbn)
+    book=db.execute("SELECT * FROM books WHERE isbn=:isbn",{"isbn":isbn}).fetchone()
+    if book is None:
+        return jsonify({"error":"Invalid ISBN"}),422
+    #print(book)
+    #return jsonify({"test":"testing"})
+    
+    return jsonify({
+        "title":book[2],
+        "author":book[3],
+        "year":book[4],
+        "isbn":book[1],
+        "review_count":0,
+        "average_score":0
+    })
+
+#suryachereddy end 
+    
+    

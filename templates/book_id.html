@@ -17,7 +17,8 @@ Readers-Hub-Book
     <div id="header"></div>
     <div class="contentTitle">Written by: {{author}}</div>
     <div class="pageContent">
-        <p>API details</p>
+        <p>API details:<a href="{{url_for('api_out',isbn=isbn)}}">Click here for API</a></p> <!-- This line is edited by surya -->
+        <p>Rating on GoodReads: {{rating}}/5!</p> <!-- This line is added by surya -->
         <p>Number of reviews: 0</p>
         <p>Loop through to display reviews</p>
         <p><form action="/review" method="POST"><input type="hidden" id="myvalue" name="book_id" value="" /><script type="text/javascript">
