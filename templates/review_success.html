@@ -1,0 +1,27 @@
+{% extends "layout2.html" %}
+
+{% block title %}
+   Readers Hub
+{% endblock %}
+
+{% block body %}
+<div id="title">Success!</div>
+<div id="linkGroup">
+    <div class="link"><a href="{{ url_for('main') }}">Home</a></div>
+    <div class="link"><a href="{{ url_for('user') }}">User Info</a></div>
+    <div class="link"><a href="{{ url_for('search') }}">Search</a></div>
+    <div class="link"><a href="{{ url_for('api') }}">API</a></div>
+</div>
+        
+<div id="blueBox"> 
+    <div id="header"></div>
+    <div class="contentTitle">Your review and ratings has been submitted, Thank You!</div>
+    <div class="pageContent">
+        <p>Please note that you can only review a book once!</p>
+        <p>Your review has been received successfully. We will post it on our website</p>
+        <p>Thank You for helping the Readers-Hub community! Please navigate using the tabs above.</p>
+        <p>You can check your review by navigating to the book page!</p>
+        <p><form action="/" method="GET">Return to HomePage: <input type="submit" value="HOME"></form></p>
+    </div>
+</div>
+{% endblock %}

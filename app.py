@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, session, render_template, request
 from flask_session import Session
@@ -80,14 +81,56 @@ def main():
 def user():
     id = session["id"]
     username = db.execute("SELECT username FROM users WHERE id = :id",{"id":id}).fetchone()
-    username = username[0]
     db.commit()
+    username = username[0]
     return render_template('userpage.html',username=username)
 
 @app.route("/search",methods = ["POST","GET"])
 def search():
-    return "SEARCHPAGE"
+    if request.method == "POST":
+        string = request.form.get("string")
+        #EXECUTE SEARCH FUNCTION PASS RESULTS TO SEARCH.html
+        string.lower()
+        string = '%' + string + '%'
+        results = db.execute("SELECT id,title FROM books WHERE LOWER (books.title) LIKE :string", {"string":string}).fetchall()
+        db.commit()
+        if len(results)<1:
+            return render_template('search.html', msg = "Sorry, we could not find what you were looking for.")
+        else:
+            return render_template('search.html', msg = "Select the book you were looking for: ",results = results)
+        
+    else:
+        return render_template('search.html', msg = "Results will appear here, please wait")
+
+@app.route("/search/<int:book_id>", methods = ["GET"])
+def book(book_id):
+    bid = int(book_id)
+    row = db.execute("SELECT * FROM books WHERE id = :id",{"id":bid}).fetchone()
+    db.commit()
+    data = {'bid':bid}
+    return render_template('book_id.html',title = row[2],author = row[3],data = data)
 
 @app.route("/API",methods = ["POST","GET"])
 def api():
-    return "API"
+    result = []
+    for i in range(50):
+        result.append(i)
+    return render_template('test.html',results = result)
+
+@app.route("/review", methods = ["POST"])
+def review():
+    book_id = request.form.get("book_id")
+    bid = int(book_id)
+    uid = session['id']
+    row = db.execute("SELECT title FROM books WHERE id = :id",{"id":bid}).fetchone()
+    username = db.execute("SELECT username FROM users WHERE id = :id",{"id":uid}).fetchone()
+    db.commit()
+    username = username[0]
+    title = row[0]
+    return render_template("review_page.html", book_id = bid, username = username,title = title)
+
+@app.route("/review/success")
+def success():
+    book_id = request.form.get("book_id")
+    data = {'bid':book_id}
+    return render_template('review_success.html',data = data)

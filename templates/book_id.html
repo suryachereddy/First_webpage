@@ -1,0 +1,31 @@
+{% extends "layout2.html" %}
+
+{% block title %}
+Readers-Hub-Book
+{% endblock %}
+
+{% block body %}
+<div id="title">{{title}}</div>
+<div id="linkGroup">
+    <div class="link"><a href="{{ url_for('main') }}">Home</a></div>
+    <div class="link"><a href="{{ url_for('user') }}">User Info</a></div>
+    <div class="link"><a href="{{ url_for('search') }}">Search</a></div>
+    <div class="link"><a href="{{ url_for('api') }}">API</a></div>
+</div>
+
+<div id="blueBox"> 
+    <div id="header"></div>
+    <div class="contentTitle">Written by: {{author}}</div>
+    <div class="pageContent">
+        <p>API details</p>
+        <p>Number of reviews: 0</p>
+        <p>Loop through to display reviews</p>
+        <p><form action="/review" method="POST"><input type="hidden" id="myvalue" name="book_id" value="" /><script type="text/javascript">
+            var book_id = {{ data.bid }}
+            document.getElementById("myvalue").value = book_id;
+        </script>Read This Book? Please give your review!<input type="submit" value="Review">
+        </form>
+        </p>
+    </div>
+</div>
+{% endblock %}
